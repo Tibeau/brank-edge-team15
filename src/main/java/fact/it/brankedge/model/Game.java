@@ -1,10 +1,30 @@
 package fact.it.brankedge.model;
 
 public class Game {
+    private  int id;
     private String name;
     private int release_year;
     private String developer;
     private int sales;
+
+    public Game() {
+
+    }
+
+    public Game(String name, int release_year, String developer, int sales) {
+        this.name = name;
+        this.release_year = release_year;
+        this.developer = developer;
+        this.sales = sales;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -38,7 +58,5 @@ public class Game {
         this.sales = sales;
     }
 
-    public Game() {
 
-    }
 }

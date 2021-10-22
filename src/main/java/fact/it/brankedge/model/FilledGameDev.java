@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FilledGameDev {
+
     private String developerName;
     private List<Release> releases;
 
@@ -13,6 +14,14 @@ public class FilledGameDev {
         games.forEach(game -> {
             releases.add(new Release(game.getDeveloper(), game.getName()));
         });
+        setReleases(releases);
+
+    }
+
+    public FilledGameDev(Developer developer, Game game) {
+        setDeveloperName(developer.getName());
+        releases = new ArrayList<>();
+        releases.add(new Release(game.getDeveloper(), game.getName()));
         setReleases(releases);
 
     }
