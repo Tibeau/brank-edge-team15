@@ -27,11 +27,11 @@ public class FilledGameDevContoller {
     @Value("${developerservice.baseurl}")
     private String developerServiceBaseUrl;
 
-    @GetMapping("/developer/{Id}")
+    @GetMapping("releases/developer/{Id}")
     public List<FilledGameDev> getDevelopersById(@PathVariable Integer Id) {
 
 
-        List<FilledGameDev> returnList= new ArrayList();
+        List<FilledGameDev> returnList = new ArrayList();
 
         ResponseEntity<List<Game>> responseEntityGames =
                 restTemplate.exchange("http://" + gameServiceBaseUrl + "/games/developer/{Id}",
@@ -40,112 +40,57 @@ public class FilledGameDevContoller {
 
         List<Game> games = responseEntityGames.getBody();
 
-        for (Game game:
+        for (Game game :
                 games) {
             Developer developer =
                     restTemplate.getForObject("http://" + developerServiceBaseUrl + "/games/{name}",
                             Developer.class, game.getName());
 
-            returnList.add(new FilledGameDev(developer, game));
+            returnList.add(new FilledGameDev(developer, games));
         }
 
         return returnList;
     }
 
-    @GetMapping("/developer/name/{name}")
-    public List<FilledGameDev> getDevelopersByName(@PathVariable String name){
+    @GetMapping("releases/developer/name/{name}")
+    public List<FilledGameDev> getDevelopersByName(@PathVariable String name) {
 
-        List<FilledGameDev> returnList= new ArrayList();
+        List<FilledGameDev> returnList = new ArrayList();
 
-        ResponseEntity<List<Developer>> responseEntityDeveloper =
-                restTemplate.exchange("http://" + DeveloperServiceBaseUrl + "/developer/name/{name}",
+        ResponseEntity<List<Developer>> responseEntityDevelopers =
+                restTemplate.exchange("http://" + developerServiceBaseUrl + "/developer/name/{name}",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {
                         }, name);
 
         List<Developer> developers = responseEntityDevelopers.getBody();
 
-        for (Developer developer:
+        for (Developer developer :
                 developers) {
             ResponseEntity<List<Game>> responseEntityGames =
                     restTemplate.exchange("http://" + gameServiceBaseUrl + "/games/{name}",
                             HttpMethod.GET, null, new ParameterizedTypeReference<List<Game>>() {
                             }, developer.getName());
 
-            returnList.add(new FilledBookReview(book,responseEntityReviews.getBody()));
+            returnList.add(new FilledGameDev(developer, responseEntityGames.getBody()));
         }
 
         return returnList;
     }
 
-    @GetMapping("/rankings/book/{ISBN}")
-    public FilledBookReview getRankingsByISBN(@PathVariable String ISBN){
+    @GetMapping("releases/rankings/developer/{name}")
+    public FilledGameDev getReleasebyDevName(@PathVariable String ISBN) {
 
-        Book book =
-                restTemplate.getForObject("http://" + bookInfoServiceBaseUrl + "/books/{ISBN}",
-                        Book.class, ISBN);
+        Developer developer =
+                restTemplate.getForObject("http://" + developerServiceBaseUrl + "/developers/{id}",
+                        Developer.class, ISBN);
 
-        ResponseEntity<List<Review>> responseEntityReviews =
-                restTemplate.exchange("http://" + reviewServiceBaseUrl + "/reviews/{ISBN}",
-                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Review>>() {
-                        }, ISBN);
+        ResponseEntity<List<Game>> responseEntityReviews =
+                restTemplate.exchange("http://" + gameServiceBaseUrl + "/reviews/{ISBN}",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Game>>() {
+                        }, developer.getName());
 
-        return new FilledBookReview(book,responseEntityReviews.getBody());
+        return new FilledGameDev(developer, responseEntityReviews.getBody());
     }
 
-    @GetMapping("/rankings/{userId}/book/{ISBN}")
-    public FilledBookReview getRankingByUserIdAndISBN(@PathVariable Integer userId, @PathVariable String ISBN){
 
-        Book book =
-                restTemplate.getForObject("http://" + bookInfoServiceBaseUrl + "/books/{ISBN}",
-                        Book.class, ISBN);
-
-        Review review =
-                restTemplate.getForObject("http://" + reviewServiceBaseUrl + "/reviews/user/" + userId + "/book/" + ISBN,
-                        Review.class);
-
-        return new FilledBookReview(book, review);
-    }
-
-    @PostMapping("/rankings")
-    public FilledBookReview addRanking(@RequestParam Integer userId, @RequestParam String ISBN, @RequestParam Integer score){
-
-        Review review =
-                restTemplate.postForObject("http://" + reviewServiceBaseUrl + "/reviews",
-                        new Review(userId,ISBN,score),Review.class);
-
-        Book book =
-                restTemplate.getForObject("http://" + bookInfoServiceBaseUrl + "/books/{ISBN}",
-                        Book.class,ISBN);
-
-        return new FilledBookReview(book, review);
-    }
-
-    @PutMapping("/rankings")
-    public FilledBookReview updateRanking(@RequestParam Integer userId, @RequestParam String ISBN, @RequestParam Integer score){
-
-        Review review =
-                restTemplate.getForObject("http://" + reviewServiceBaseUrl + "/reviews/user/" + userId + "/book/" + ISBN,
-                        Review.class);
-        review.setScoreNumber(score);
-
-        ResponseEntity<Review> responseEntityReview =
-                restTemplate.exchange("http://" + reviewServiceBaseUrl + "/reviews",
-                        HttpMethod.PUT, new HttpEntity<>(review), Review.class);
-
-        Review retrievedReview = responseEntityReview.getBody();
-
-        Book book =
-                restTemplate.getForObject("http://" + bookInfoServiceBaseUrl + "/books/{ISBN}",
-                        Book.class,ISBN);
-
-        return new FilledBookReview(book, retrievedReview);
-    }
-
-    @DeleteMapping("/rankings/{userId}/book/{ISBN}")
-    public ResponseEntity deleteRanking(@PathVariable Integer userId, @PathVariable String ISBN){
-
-        restTemplate.delete("http://" + reviewServiceBaseUrl + "/reviews/user/" + userId + "/book/" + ISBN);
-
-        return ResponseEntity.ok().build();
-    }
 }
