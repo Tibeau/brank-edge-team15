@@ -77,7 +77,7 @@ public class FilledGameDevContoller {
         return returnList;
     }
 
-    @GetMapping("releases/rankings/developer/{name}")
+    @GetMapping("releases/developer/{name}")
     public FilledGameDev getReleasebyDevName(@PathVariable String ISBN) {
 
         Developer developer =
