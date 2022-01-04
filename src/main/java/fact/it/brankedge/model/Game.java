@@ -4,17 +4,17 @@ public class Game {
     private  int id;
     private String name;
     private int release_year;
-    private String developer;
+    private String developerName;
     private int sales;
 
     public Game() {
 
     }
 
-    public Game(String name, int release_year, String developer, int sales) {
+    public Game(String name, int release_year, String developerName, int sales) {
         this.name = name;
         this.release_year = release_year;
-        this.developer = developer;
+        this.developerName = developerName;
         this.sales = sales;
     }
 
@@ -42,12 +42,12 @@ public class Game {
         this.release_year = release_year;
     }
 
-    public String getDeveloper() {
-        return developer;
+    public String getDeveloperName() {
+        return developerName;
     }
 
-    public void setDeveloper(String developer) {
-        this.developer = developer;
+    public void setDeveloperName(String developerName) {
+        this.developerName = developerName;
     }
 
     public int getSales() {

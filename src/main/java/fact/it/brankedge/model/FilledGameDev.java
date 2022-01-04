@@ -12,7 +12,7 @@ public class FilledGameDev {
         setDeveloperName(developer.getName());
         releases = new ArrayList<>();
         games.forEach(game -> {
-            releases.add(new Release(game.getDeveloper(), game.getName()));
+            releases.add(new Release(game.getDeveloperName(), game.getName()));
         });
         setReleases(releases);
 
@@ -21,7 +21,7 @@ public class FilledGameDev {
     public FilledGameDev(Developer developer, Game game) {
         setDeveloperName(developer.getName());
         releases = new ArrayList<>();
-        releases.add(new Release(game.getDeveloper(), game.getName()));
+        releases.add(new Release(game.getDeveloperName(), game.getName()));
         setReleases(releases);
 
     }

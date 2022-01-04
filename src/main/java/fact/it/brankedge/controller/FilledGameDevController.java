@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -28,30 +26,6 @@ public class FilledGameDevController {
     @Value("${developerservice.baseurl}")
     private String developerServiceBaseUrl;
 
-    @GetMapping("releases/developer/{Id}")
-    public List<FilledGameDev> getDevelopersById(@PathVariable Integer Id) {
-
-
-        List<FilledGameDev> returnList = new ArrayList();
-
-        ResponseEntity<List<Game>> responseEntityGames =
-                restTemplate.exchange("http://" + gameServiceBaseUrl + "/games/developer/{Id}",
-                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Game>>() {
-                        }, Id);
-
-        List<Game> games = responseEntityGames.getBody();
-
-        for (Game game :
-                games) {
-            Developer developer =
-                    restTemplate.getForObject("http://" + developerServiceBaseUrl + "/games/{name}",
-                            Developer.class, game.getName());
-
-            returnList.add(new FilledGameDev(developer, games));
-        }
-
-        return returnList;
-    }
 
     @GetMapping("releases/developer/name/{name}")
     public List<FilledGameDev> getDevelopersByName(@PathVariable String name) {
@@ -70,7 +44,7 @@ public class FilledGameDevController {
             ResponseEntity<List<Game>> responseEntityGames =
                     restTemplate.exchange("http://" + gameServiceBaseUrl + "/games/{name}",
                             HttpMethod.GET, null, new ParameterizedTypeReference<List<Game>>() {
-                            }, developer.getName());
+                            }, name);
 
             returnList.add(new FilledGameDev(developer, responseEntityGames.getBody()));
         }
@@ -78,20 +52,23 @@ public class FilledGameDevController {
         return returnList;
     }
 
-    @GetMapping("releases/developer/{name}")
-    public FilledGameDev getReleasebyDevName(@PathVariable String ISBN) {
 
-        Developer developer =
-                restTemplate.getForObject("http://" + developerServiceBaseUrl + "/developers/{id}",
-                        Developer.class, ISBN);
+    @GetMapping("releases/developer/{developerName}")
+    public FilledGameDev getReleasebyDevName(@PathVariable String developerName) {
+        Developer developer1 =
+                restTemplate.getForObject("http://" + developerServiceBaseUrl + "/developers/{name}",
+                        Developer.class, developerName);
 
-        ResponseEntity<List<Game>> responseEntityReviews =
-                restTemplate.exchange("http://" + gameServiceBaseUrl + "/reviews/{ISBN}",
+        ResponseEntity<List<Game>> responseEntityGame =
+                restTemplate.exchange("http://" + gameServiceBaseUrl + "/games/{name}",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Game>>() {
-                        }, developer.getName());
+                        }, developerName);
 
-        return new FilledGameDev(developer, responseEntityReviews.getBody());
+        return new FilledGameDev(developer1, responseEntityGame.getBody());
     }
 
-
+    @DeleteMapping("/releases/games/{id}")
+    public void deleteGame(@PathVariable String id){
+        restTemplate.delete("http://" + gameServiceBaseUrl + "/games/{id}" );
+    }
 }

@@ -25,8 +25,8 @@ public class SwaggerConfig {
     }
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
-                .title("Game info API")
-                .description("This page list all the rest apis for the game info API.")
+                .title("Brank edge API")
+                .description("This page list all the rest apis for the brank edge API.")
                 .version("1.0-SNAPSHOT")
                 .build();
     }
