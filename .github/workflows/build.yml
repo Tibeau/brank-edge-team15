@@ -25,7 +25,7 @@ java-version: 11
 run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
 
 - name: Docker Build
-run: docker build -t ${{ secrets.DOCKER_USER }}/brank-edge-service-ex:latest .
+run: docker build -t ${{ secrets.DOCKER_USER }}/brank-edge-team15:latest .
 
 - name: Upload container to Docker Hub with Push
-run: docker push ${{ secrets.DOCKER_USER }}/brank-edge-service-ex:latest
+run: docker push ${{ secrets.DOCKER_USER }}/brank-edge-team15:latest
