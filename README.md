@@ -27,6 +27,8 @@ https://github.com/Tibeau/game-info-team15
 
 
 SwaggerUI:
-
-
+https://github.com/Tibeau/brank-edge-team15/blob/main/img/delere%20game.JPG
+https://github.com/Tibeau/brank-edge-team15/blob/main/img/games.JPG
+https://github.com/Tibeau/brank-edge-team15/blob/main/img/post%20game.JPG
+https://github.com/Tibeau/brank-edge-team15/blob/main/img/swagger.JPG
  
