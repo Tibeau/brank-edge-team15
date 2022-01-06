@@ -1,7 +1,7 @@
 # brank-edge-team15
 de architectuur:
 
-![Architecture](https://github.com/Tibeau/brank-edge-team15/blob/main/microservice-model.JPG)
+![Architecture](https://github.com/Tibeau/brank-edge-team15/blob/main/img/microservice-model.JPG)
 
 
 Voor ons thema hebben wij gekozen voor developers die die video games uitbrengen.
