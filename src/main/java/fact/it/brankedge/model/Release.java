@@ -17,6 +17,7 @@ public class Release {
         developerId = developperId;
     }
 
+    
     public String getGameName() {
         return gameName;
     }
