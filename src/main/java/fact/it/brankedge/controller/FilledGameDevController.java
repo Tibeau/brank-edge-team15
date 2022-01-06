@@ -6,6 +6,7 @@ import fact.it.brankedge.model.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,48 +28,71 @@ public class FilledGameDevController {
     private String developerServiceBaseUrl;
 
 
-    @GetMapping("releases/developer/name/{name}")
-    public List<FilledGameDev> getDevelopersByName(@PathVariable String name) {
+    @DeleteMapping("/releases/games/{id}")
+    public void deleteGame(@PathVariable String id){
+        restTemplate.delete("http://" + gameServiceBaseUrl + "/games/" + id );
+    }
 
+    @PostMapping("/releases")
+    public FilledGameDev addRelease(@RequestParam String gameName, @RequestParam Integer release_year, @RequestParam String developerName, @RequestParam Integer sales){
+
+        Game game =
+                restTemplate.postForObject("http://" + gameServiceBaseUrl + "/games",
+                        new Game(gameName, release_year, developerName, sales),Game.class);
+
+        Developer developer =
+                restTemplate.getForObject("http://" + developerServiceBaseUrl + "/developers/" + developerName,
+                        Developer.class, developerName);
+
+        return new FilledGameDev(developer, game);
+    }
+
+    @GetMapping("releases/games")
+    public List<FilledGameDev> getGames() {
         List<FilledGameDev> returnList = new ArrayList();
 
-        ResponseEntity<List<Developer>> responseEntityDevelopers =
-                restTemplate.exchange("http://" + developerServiceBaseUrl + "/developer/name/{name}",
-                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {
-                        }, name);
+        ResponseEntity<List<Game>> responseEntityGame =
+                restTemplate.exchange("http://" + gameServiceBaseUrl + "/games",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Game>>() {
+                        });
 
-        List<Developer> developers = responseEntityDevelopers.getBody();
-
-        for (Developer developer :
-                developers) {
-            ResponseEntity<List<Game>> responseEntityGames =
-                    restTemplate.exchange("http://" + gameServiceBaseUrl + "/games/{name}",
-                            HttpMethod.GET, null, new ParameterizedTypeReference<List<Game>>() {
-                            }, name);
-
-            returnList.add(new FilledGameDev(developer, responseEntityGames.getBody()));
-        }
-
+        returnList.add(new FilledGameDev(responseEntityGame.getBody()));
         return returnList;
     }
 
+    @GetMapping("releases/developers")
+    public List<FilledGameDev> getDevelopers() {
+        List<FilledGameDev> returnList = new ArrayList();
 
-    @GetMapping("releases/developer/{developerName}")
-    public FilledGameDev getReleasebyDevName(@PathVariable String developerName) {
-        Developer developer1 =
-                restTemplate.getForObject("http://" + developerServiceBaseUrl + "/developers/{name}",
-                        Developer.class, developerName);
+        ResponseEntity<List<Developer>> responseEntityDeveloper =
+                restTemplate.exchange("http://" + developerServiceBaseUrl + "/developers",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {
+                        });
 
-        ResponseEntity<List<Game>> responseEntityGame =
-                restTemplate.exchange("http://" + gameServiceBaseUrl + "/games/{name}",
-                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Game>>() {
-                        }, developerName);
+        List<Developer> developers = responseEntityDeveloper.getBody();
+        for (Developer developer: developers){
+            ResponseEntity<List<Game>> responseEntityGame =
+                    restTemplate.exchange("http://" + gameServiceBaseUrl + "/games",
+                            HttpMethod.GET, null, new ParameterizedTypeReference<List<Game>>(){}, developer.getName());
+            returnList.add(new FilledGameDev(developer, responseEntityGame.getBody()));
+        }
+        return returnList;
+    }
+    @PutMapping("/releases")
+    public FilledGameDev updateRelease(@RequestParam String developerId, @RequestParam String gameName){
 
-        return new FilledGameDev(developer1, responseEntityGame.getBody());
+        Game game = restTemplate.getForObject("http://" + gameServiceBaseUrl + "/games/name/" + gameName, Game.class);
+
+        ResponseEntity<Game> responseEntityGame =
+                restTemplate.exchange("http://" + gameServiceBaseUrl + "/games",
+                        HttpMethod.PUT, new HttpEntity<>(game), Game.class);
+
+        Game retrievedGame = responseEntityGame.getBody();
+        Developer developer =
+                restTemplate.getForObject("http://" + developerServiceBaseUrl + "/developers/{developerId}",
+                        Developer.class, developerId);
+
+        return new FilledGameDev(developer, retrievedGame);
     }
 
-    @DeleteMapping("/releases/games/{id}")
-    public void deleteGame(@PathVariable String id){
-        restTemplate.delete("http://" + gameServiceBaseUrl + "/games/{id}" );
-    }
 }

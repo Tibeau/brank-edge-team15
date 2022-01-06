@@ -15,7 +15,14 @@ public class FilledGameDev {
             releases.add(new Release(game.getDeveloperName(), game.getName()));
         });
         setReleases(releases);
+    }
 
+    public FilledGameDev(List<Game> games) {
+        releases = new ArrayList<>();
+        games.forEach(game -> {
+            releases.add(new Release(game.getDeveloperName(), game.getName()));
+        });
+        setReleases(releases);
     }
 
     public FilledGameDev(Developer developer, Game game) {

@@ -1,20 +1,20 @@
 package fact.it.brankedge.model;
 
 public class Release {
-    private String DeveloperId;
+    private String developerId;
     private String gameName;
 
     public Release(String developperId, String gameName) {
-        this.DeveloperId = developperId;
+        this.developerId = developperId;
         this.gameName = gameName;
     }
 
     public String getDeveloperId() {
-        return DeveloperId;
+        return developerId;
     }
 
     public void setDeveloperId(String developperId) {
-        DeveloperId = developperId;
+        developerId = developperId;
     }
 
     public String getGameName() {
