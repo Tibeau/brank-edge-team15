@@ -4,6 +4,9 @@ de architectuur:
 ![Architecture](https://github.com/Tibeau/brank-edge-team15/blob/main/img/microservice-model.JPG)
 
 
+
+
+
 Voor ons thema hebben wij gekozen voor developers die die video games uitbrengen.
 Developers hebben:
 een id
@@ -19,11 +22,18 @@ een makers naam
 een hoeveelheid verkopen 
 
 
+
+
+
+
 Developer 'back-end' repo:
 https://github.com/Tibeau/developper-team15
 
 Game-info 'back-end' repo:
 https://github.com/Tibeau/game-info-team15
+
+
+
 
 
 SwaggerUI:
