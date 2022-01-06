@@ -5,7 +5,7 @@ Tests, Dockerfiles, etc. are to be added in a later version.
 
 The example architecture is as follows:
 
-![Architecture](https://user-images.githubusercontent.com/51931877/135186727-b18bbbf3-0e74-485c-8278-857f2eef0180.png)
+![Architecture](https://github.com/Tibeau/brank-edge-team15/blob/main/microservice-model.JPG)
 
 One Edge service brank-edge-service will connect to two lower services book-info-service  and review-service  to request information which it will then process and combine into a single response to the user. The user is only supposed to communicate with the brank-edge-service.
 
