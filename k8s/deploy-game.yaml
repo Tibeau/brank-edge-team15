@@ -56,7 +56,7 @@ spec:
     spec:
       containers:
       - name: game-info-service-server
-        image: tibeau/game-info-team15
+        image: yentl718/game-info-team15
         imagePullPolicy: Always
         ports:
           - name: http
