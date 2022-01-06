@@ -8,7 +8,6 @@ public class Release {
         this.developerId = developperId;
         this.gameName = gameName;
     }
-
     public String getDeveloperId() {
         return developerId;
     }
@@ -16,12 +15,9 @@ public class Release {
     public void setDeveloperId(String developperId) {
         developerId = developperId;
     }
-
-    
     public String getGameName() {
         return gameName;
     }
-
     public void setGameName(String gameName) {
         this.gameName = gameName;
     }
