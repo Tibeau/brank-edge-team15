@@ -20,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -61,6 +61,8 @@ public class FilledGameDevControllerUnitTests {
     private List<Game> games2 = Arrays.asList(game1, game2, game3);
     private List<Game> games3 = List.of(game1);
     private List<Developer> allDevs = Arrays.asList(developer1, developer2);
+
+    private Release release1 = new Release("Activision", "The Sims 4");
 
     @BeforeEach
     public void initializeMockserver() {
@@ -136,6 +138,20 @@ public class FilledGameDevControllerUnitTests {
         mockMvc.perform(delete("/releases/games/{name}", "Plants Vs Zombies"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void whenSetDeveloperId_thenReturnDeveloperId() throws Exception {
+        Release releaseDevId1 = release1;
+        releaseDevId1.setDeveloperId("1");
+        assertThat(release1.getDeveloperId()).isEqualTo("1");
+    }
+    @Test
+    void whenSetGameName_thenReturnGameName() throws Exception {
+        Release releaseGameName1 = release1;
+        releaseGameName1.setGameName("naam");
+        assertThat(release1.getGameName()).isEqualTo("naam");
+    }
+
 
 
 
