@@ -79,6 +79,13 @@ public class FilledGameDevControllerUnitTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(mapper.writeValueAsString(games2))
                 );
+
+        mockMvc.perform(get("/releases/games"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].releases[0].developerId", is("Activision")))
+                .andExpect(jsonPath("$[0].releases[0].gameName", is("Plants vs zombies")));
+
     }
 
     @Test
