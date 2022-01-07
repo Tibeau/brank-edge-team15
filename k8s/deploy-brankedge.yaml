@@ -15,7 +15,7 @@ spec:
         app: brankedge-service-server
     spec:
       containers:
-        - name: edge-service-server
+        - name: brankedge-service-server
           image: yentl718/brank-edge-team15
           imagePullPolicy: Always
           ports:
