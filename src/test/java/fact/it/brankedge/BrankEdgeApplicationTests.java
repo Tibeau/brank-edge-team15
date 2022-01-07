@@ -6,8 +6,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class BrankEdgeApplicationTests {
 
+
     @Test
     void contextLoads() {
     }
+
+    @Test
+    public void main() {
+        BrankEdgeApplication.main(new String[] {});}
+
 
 }

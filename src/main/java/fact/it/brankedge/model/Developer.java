@@ -10,6 +10,12 @@ public class Developer {
     public Developer() {
     }
 
+    public Developer(String name, Integer count_workers, Integer founding_year) {
+        this.name = name;
+        this.count_workers = count_workers;
+        this.founding_year = founding_year;
+    }
+
     public Integer getId() {
         return id;
     }

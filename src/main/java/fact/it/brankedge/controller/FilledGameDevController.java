@@ -60,24 +60,6 @@ public class FilledGameDevController {
         return returnList;
     }
 
-    @GetMapping("releases/developers")
-    public List<FilledGameDev> getDevelopers() {
-        List<FilledGameDev> returnList = new ArrayList();
-
-        ResponseEntity<List<Developer>> responseEntityDeveloper =
-                restTemplate.exchange("http://" + developerServiceBaseUrl + "/developers",
-                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Developer>>() {
-                        });
-
-        List<Developer> developers = responseEntityDeveloper.getBody();
-        for (Developer developer: developers){
-            ResponseEntity<List<Game>> responseEntityGame =
-                    restTemplate.exchange("http://" + gameServiceBaseUrl + "/games",
-                            HttpMethod.GET, null, new ParameterizedTypeReference<List<Game>>(){}, developer.getName());
-            returnList.add(new FilledGameDev(developer, responseEntityGame.getBody()));
-        }
-        return returnList;
-    }
     @PutMapping("/releases")
     public FilledGameDev updateRelease(@RequestParam String developerId, @RequestParam String gameName){
 
