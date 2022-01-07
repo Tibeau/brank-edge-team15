@@ -28,9 +28,9 @@ public class FilledGameDevController {
     private String developerServiceBaseUrl;
 
 
-    @DeleteMapping("/releases/games/{id}")
-    public void deleteGame(@PathVariable String id){
-        restTemplate.delete("http://" + gameServiceBaseUrl + "/games/" + id );
+    @DeleteMapping("/releases/games/{name}")
+    public void deleteGame(@PathVariable String name){
+        restTemplate.delete("http://" + gameServiceBaseUrl + "/games/" + name );
     }
 
     @PostMapping("/releases")

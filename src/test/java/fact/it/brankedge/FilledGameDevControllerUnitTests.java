@@ -81,41 +81,54 @@ public class FilledGameDevControllerUnitTests {
                 );
     }
 
-//    @Test
-//    public void whenAddRanking_thenReturnFilledGameDevJson() throws Exception {
-//
-//        Game game1 = new Game("The sims 4", 1925, "Activision", 6812);
-//
-//
-//        mockServer.expect(ExpectedCount.once(),
-//                requestTo(new URI("http://" + gameServiceBaseUrl + "/games")))
-//                .andExpect(method(HttpMethod.POST))
-//                .andRespond(withStatus(HttpStatus.OK)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .body(mapper.writeValueAsString(game1))
-//                );
-//
-//        mockServer.expect(ExpectedCount.once(),
-//                requestTo(new URI("http://" + developerServiceBaseUrl + "/developers")))
-//                .andExpect(method(HttpMethod.GET))
-//                .andRespond(withStatus(HttpStatus.OK)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .body(mapper.writeValueAsString(developer1))
-//                );
-//
-//        mockMvc.perform(post("/releases")
-//                .param("gameName", game1.getName())
-//                .param("release_year", game1.getRelease_year().toString())
-//                .param("developerName", game1.getDeveloperName())
-//                .param("sales", game1.getSales().toString())
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.gameName", is("The sims 4")))
-//                .andExpect(jsonPath("$.release_year", is(1925)))
-//                .andExpect(jsonPath("$.developerName", is("Activision")))
-//                .andExpect(jsonPath("$.sales", is(6812)));
-//    }
+    @Test
+    public void whenAddRelease_thenReturnFilledGameDevJson() throws Exception {
+
+        Game game1 = new Game("The sims 4", 1925, "Activision", 6812);
+
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI("http://" + gameServiceBaseUrl + "/games")))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(mapper.writeValueAsString(game1))
+                );
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI("http://" + developerServiceBaseUrl + "/developers/Activision")))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(mapper.writeValueAsString(developer2))
+                );
+
+        mockMvc.perform(post("/releases")
+                .param("gameName", game1.getName())
+                .param("developerName", game1.getDeveloperName())
+                .param("release_year",game1.getRelease_year().toString())
+                .param("sales",game1.getSales().toString())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.developerName",is("Activision")))
+                .andExpect(jsonPath("$.releases[0].developerId", is("Activision")))
+                .andExpect(jsonPath("$.releases[0].gameName", is("The sims 4")));
+    }
+
+    @Test
+    public void whenDeleteRelease_thenReturnStatusOk() throws Exception {
+
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo(new URI("http://" + gameServiceBaseUrl + "/games/Plants%20Vs%20Zombies")))
+                .andExpect(method(HttpMethod.DELETE))
+                .andRespond(withStatus(HttpStatus.OK)
+                );
+
+        mockMvc.perform(delete("/releases/games/{name}", "Plants Vs Zombies"))
+                .andExpect(status().isOk());
+    }
 
 
 
