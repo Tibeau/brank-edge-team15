@@ -60,21 +60,21 @@ public class FilledGameDevController {
         return returnList;
     }
 
-    @PutMapping("/releases")
-    public FilledGameDev updateRelease(@RequestParam String developerId, @RequestParam String gameName){
-
-        Game game = restTemplate.getForObject("http://" + gameServiceBaseUrl + "/games/name/" + gameName, Game.class);
-
-        ResponseEntity<Game> responseEntityGame =
-                restTemplate.exchange("http://" + gameServiceBaseUrl + "/games",
-                        HttpMethod.PUT, new HttpEntity<>(game), Game.class);
-
-        Game retrievedGame = responseEntityGame.getBody();
-        Developer developer =
-                restTemplate.getForObject("http://" + developerServiceBaseUrl + "/developers/{developerId}",
-                        Developer.class, developerId);
-
-        return new FilledGameDev(developer, retrievedGame);
-    }
+//    @PutMapping("/releases")
+//    public FilledGameDev updateRelease(@RequestParam String developerId, @RequestParam String gameName){
+//
+//        Game game = restTemplate.getForObject("http://" + gameServiceBaseUrl + "/games/name/" + gameName, Game.class);
+//
+//        ResponseEntity<Game> responseEntityGame =
+//                restTemplate.exchange("http://" + gameServiceBaseUrl + "/games",
+//                        HttpMethod.PUT, new HttpEntity<>(game), Game.class);
+//
+//        Game retrievedGame = responseEntityGame.getBody();
+//        Developer developer =
+//                restTemplate.getForObject("http://" + developerServiceBaseUrl + "/developers/{developerId}",
+//                        Developer.class, developerId);
+//
+//        return new FilledGameDev(developer, retrievedGame);
+//    }
 
 }
