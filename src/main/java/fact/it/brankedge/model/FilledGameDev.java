@@ -8,15 +8,6 @@ public class FilledGameDev {
     private String developerName;
     private List<Release> releases;
 
-    public FilledGameDev(Developer developer, List<Game> games) {
-        setDeveloperName(developer.getName());
-        releases = new ArrayList<>();
-        games.forEach(game -> {
-            releases.add(new Release(game.getDeveloperName(), game.getName()));
-        });
-        setReleases(releases);
-    }
-
     public FilledGameDev(List<Game> games) {
         releases = new ArrayList<>();
         games.forEach(game -> {
