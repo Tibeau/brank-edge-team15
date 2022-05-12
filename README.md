@@ -42,3 +42,8 @@ SwaggerUI:
 ![Architecture](https://github.com/Tibeau/brank-edge-team15/blob/main/img/games.JPG)
 ![Architecture](https://github.com/Tibeau/brank-edge-team15/blob/main/img/post%20game.JPG)
 
+SonarCloud:
+https://sonarcloud.io/summary/overall?id=Tibeau_brank-edge-team15
+https://sonarcloud.io/summary/overall?id=Tibeau_developper-team15
+https://sonarcloud.io/summary/overall?id=Tibeau_game-info-team15
+
